@@ -35,11 +35,11 @@ library(ggplot2)
 # if you don't want all the text below section 1 to disappear, make sure to create
 # another section below using the same technique
 
-# using `#####` also has the same effect!
+# using `#####` without any text afterwards also has the same effect!
 
 # also note that at the bottom on the script pane, there is a section navigator!
 
-### To run a command ----
+##### To run a command ----
 # 1) to run a single line, click on the line and select `run` or use `ctrl + enter` // `command + enter`
 # 2) to run multiple lines of code, highlight them and select `run` or use `ctrl + enter` // `command + enter`
 # 3) to run all the code in a script, use `ctrl + shift + enter`
@@ -276,8 +276,7 @@ getwd() # when you run this, your working directory will appear in the console
          y = "Weight (g)",
          fill = "Diet") +
     theme_minimal() 
-
-
+  
 ###-----------------------------------------------------------------------------
 # Additional information ----
 ###-----------------------------------------------------------------------------
@@ -306,4 +305,14 @@ getwd() # when you run this, your working directory will appear in the console
     group_by(Diet) %>% 
     summarise(mean_weight = mean(weight)) %>% 
     arrange(desc(mean_weight))
+  
+### uploading your own datasets
+  
+# if you are interested in using your own data, you can upload .csv files using the
+# `read.csv()` function
+  
+# if your csv is not in tidy format, you can edit it using R, you don't need to edit your excel spreadsheet
+  
+# there are also plug-ins for google sheets so that you can actively add to your data and import into R 
+# without having to re-save your file as a csv.
 
