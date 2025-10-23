@@ -1,8 +1,8 @@
 ### Welcome to the Ecology and Zoology course union's Introduction to 
 ### R and RStudio for data manipulation and visualization
-### Author: Lynndsay Terpsma
+### Author: Lynndsay Terpsma (lterpsma@student.ubc.ca)
 ### Created: October 19, 2025
-### Last updated: October 19, 2025
+### Last updated: October 23, 2025
 
 ### ----------------------------------------------------------------------------
 # Basics ----
@@ -30,10 +30,12 @@
 
 # also note that at the bottom on the script pane, there is a section navigator!
 
+#----
+
 ##### To run a command ----
-# 1) to run a single line, click on the line and select `run` or use `ctrl + enter` // `command + enter`
-# 2) to run multiple lines of code, highlight them and select `run` or use `ctrl + enter` // `command + enter`
-# 3) to run all the code in a script, use `ctrl + shift + enter` // `command + shift enter`
+# 1) to run a single line, click on the line and select `run` or use `ctrl + enter` // `cmd + return`
+# 2) to run multiple lines of code, highlight them and select `run` or use `ctrl + enter` // `cmd + return`
+# 3) to run all the code in a script, use `ctrl + shift + enter` // `cmd + shift + return`
 
 # this first thing to do in a new script is to load the packages that you want to use
 
@@ -63,9 +65,12 @@ library(ggplot2)
 # or by using
 getwd() # when you run this, your working directory will appear in the console
 
+# for more information on projects and working directories
+# https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects
+# https://support.posit.co/hc/en-us/articles/200711843-Working-Directories-and-Workspaces-in-the-RStudio-IDE
+
 ### Computer readability----
 
-# REMINDER! computers cannot handle spaces well
 # if you are naming files or objects in R, make sure to use proper naming conventions, 
 # separating words with underscores (`_`) or hyphens (`-`)
 
@@ -104,34 +109,107 @@ getwd() # when you run this, your working directory will appear in the console
   1 >= 2 # is 1 greater than or equal to 2?
   1 != 2 # is 1 not equal to 2? 
 
-## Vectors ----
+### Variables ----
+# https://www.w3schools.com/r/r_variables.asp
 
-# a reminder that a variable is a characteristic/measurement that varies among individuals
+# Variables in R are containers for storing data values
+# to assign a value to a variable, use the `<-` sign
+# for example:
+  
+  name <- "EZCU"
+  year <- 2025
 
+  name # output "EZCU"
+  year # output 2025
+  
+  # note that `name` and `year` are variables, while "EZCU" and 2025 are values
+  
 # in R, there are different categories that variables can be, which is important when you try to use your variables 
 # to perform calculations or plot with them
+  
+# VARIABLE NAMES:
+  
+  # must start with a letter and can be a combination of letters, digits, period(.), and underscore(_). If it starts with a period, it cannot be followed by a digit
+  # cannot start with a number or underscore
+  # names are case-sensitive
+  # reserved words cannot be used as variables (TRUE, FALSE, NULL, if, etc.)
+  
+### Data types ----
+# https://www.w3schools.com/r/r_data_types.asp
 
-# numerical vectors
-
-  num_vector <- c(10, 50, 10, 40)
-
-## here we assign (using `<-`) the name `num_vector` to a list of numbers,
-## using the c() function to combine values into a vector
-
-# character vectors
-
-  characters <- c("Mario", "Luigi", "Zelda", "Link") 
-
-## here we assign the name `characters` to a list of character values, using the c() function again
-
-# we can check the type of variables that these two objects are using `class()`
-
-  class(num_vector) # returns `numeric`
-  class(characters) # returns `character`
+# Variables can store data of different types, and different types can do different things
+  
+# Basic Data Types
+  
+  # numeric (e.g., 10.5, 55, 787)
+    x <- 10.5 
+    class(x)
+  
+  # integer (e.g., 1L, 55L, 1000L, where the letter "L" declares this as an integer)
+    x <- 1000L
+    class(x)
+    
+  # complex (e.g., 9 + 2i, where "i" is the imaginary part)
+    x <- 9i + 3 
+    class(x)
+    
+  # character (e.g., "k", "R is exciting", "FALSE") - aka string
+    x <- "R is exciting" 
+    class(x)
+    
+  # logical (e.g., TRUE, FALSE) - aka boolean
+    x <- TRUE
+    class(x)
+    
+# hint, you can convert between data types using functions such as `as.numeric()`, `as.integer()`, `as.complex()`
+    
+### Data structures ----
+# https://www.w3schools.com/r/r_data_structures.asp
+    
+# Types of data structures
+    
+    # vectors: most basic data structure, contains a list of items of the same type
+        # numerical vector
+        num_vector <- c(10, 50, 10, 40)
+    
+        # character vector
+        fruits <- c("banana", "apple", "kiwi")
+        
+    # lists: can hold different types of data in one structure (e.g., numbers, strings, vectors, or even other lists)
+        example_list <- list("apple", "banana", 10, 50)
+        example_list
+        
+    # matrices: 2D data structure where all elements are of the same type; like a table with rows and columns
+        example_matrix <- matrix(c(1,2,3,4,5,6), nrow = 3, ncol = 2) # you can use nrow/ncol to control the size of the matrix
+        example_matrix
+    
+    # data frames: like a table in a spreadsheet, can hold different data types across columns
+        example_df <- data.frame(
+          timestep = c(1, 5, 10),
+          leaf_diameter = c(29, 34, 18),
+          stem_length = c(20, 45, 37),
+          leaf_color = c("green", "red", "brown")
+        )
+        
+        example_df
 
 # ------------------------------------------------------------------------------
 ### data manipulation ----
 # ------------------------------------------------------------------------------
+
+# the most common dplyr functions, courtesy of 
+# https://librarycarpentry.github.io/lc-r/03-data-cleaning-and-transformation.html
+  
+# rename(): rename columns
+# recode(): recode values in a column
+# select(): subset columns
+# filter(): subset rows on conditions
+# mutate(): create new columns by using information from other columns
+# group_by() and summarise(): create summary statistics on grouped data
+# arrange(): sort results
+# count(): count discrete values
+  
+# tidyverse uses the pipe ` %>% ` for 
 
 # let's start with the ChickWeight dataset in R
   data(ChickWeight)
@@ -157,6 +235,8 @@ getwd() # when you run this, your working directory will appear in the console
 # data manipulation with dplyr
   
 # renaming columns
+# this will replace the un-capitalized 'weight' column title with 'Weight'
+# the new variable name comes first
   chicks <- chicks %>% 
     rename(Weight = weight)
 
@@ -179,6 +259,7 @@ getwd() # when you run this, your working directory will appear in the console
 
 # summarise + group_by: compute statistics by group
 # note that this time, we are creating a new data frame called `chicks_summary`
+# it is good practice to also calculate the standard deviation and at the number of observations (n), rather than just calculating the mean
   chicks_summary <- chicks %>% 
     group_by(Diet) %>% 
     summarise(mean_weight = mean(Weight),
@@ -191,13 +272,6 @@ getwd() # when you run this, your working directory will appear in the console
     group_by(Diet) %>% 
     summarise(mean_weight = mean(Weight)) %>% 
     arrange(desc(mean_weight))
-
-### other notes
-
-# the shortcut for generating `%>%` is `ctrl + shift + m` 
-# these examples are in dplyr/tidyverse format, but the same manipulations can be done with base R functions
-# you can put brackets around a section of text by highlighting it and typing `(`
-# this also goes for quotation marks, apostrophes, etc. 
 
 ### PRACTICE:
 ### if you are creating new data frames, make sure to give them informative names!
@@ -214,7 +288,8 @@ getwd() # when you run this, your working directory will appear in the console
 ### data visualization ----
 # ------------------------------------------------------------------------------
 
-# let's first look at the `ggplot2` cheat sheet to get an idea of the possibilities
+# if you want to know all the possibilities using ggplot2, have a look at the reference page
+# https://ggplot2.tidyverse.org/reference/index.html
 
 # we can find the ggplot() template in the cheat sheet, which when simplified to 
 # only the requirements, looks like this
@@ -237,15 +312,54 @@ getwd() # when you run this, your working directory will appear in the console
 # thus, your method of figure creation will depend on your goal. placing the mappings within 
 # the `ggplot()` call is typically the easiest. however, if you want to use different variables for
 # different layers on your plot, placing the mappings in each function is the way to go
+  
+### the most common geom_functions include 
+  
+  ### for one variable
+  # geom_histogram() - for continuous variables
+  # geom_density() - for continuous variables
+  # geom_bar() - for discrete variables
+  
+  ### for two variables
+  # geom_boxplot() - for discrete X, continuous Y
+  # geom_point() - for continuous X and Y
+  # geom_mooth() - for continuous X and Y
+  
+  ### for line segments
+  # geom_abline - for diagonal line
+  # geom_hline - for horizontal line
+  # geom_vline - for vertical line
+  
+### changing plot aesthetics
+  
+# using our first plot as an example, we can ...
+  
+  # change the colour of the points:
+    ggplot(chicks, aes(x = Time, y = Weight)) +
+      geom_point(color = "steelblue")
+    
+  # change the opacity of the points:
+    ggplot(chicks, aes(x = Time, y = Weight)) +
+      geom_point(alpha = 0.5)
+  
+  # change the size of the points:
+    ggplot(chicks, aes(x = Time, y = Weight)) +
+      geom_point(size = 5)
+    
+  # change the type of points:
+    ggplot(chicks, aes(x = Time, y = Weight)) +
+      geom_point(shape = 13, size = 5)
+  
+# if you are ever unsure what changes you can make, run `?geom_point` to bring up the help page
 
-# now let's get into different techniques
-
+### more complicated techniques
+    
 # add colour by diet to see treatment differences
   ggplot(chicks, aes(x = Time, y = Weight, color = Diet)) +
     geom_point(alpha = 0.6) + #adds transparency to points to increase visibility
     theme_minimal() # using built in themes can make your plots look even better!
   
-  # add lines to show growth trajectories for each chick
+# add lines to show growth trajectories for each chick
   ggplot(chicks, aes(x = Time, y = Weight, group = Chick, color = Diet)) +
     geom_line(alpha = 0.7) + 
     theme_minimal()
@@ -254,7 +368,9 @@ getwd() # when you run this, your working directory will appear in the console
 # using the dplyr data manipulation framework, we can summarise and plot our data in one chunk of code
   chicks_plot <- chicks %>% 
     group_by(Diet, Time) %>% 
-    summarise(mean_weight = mean(Weight), .groups = "drop") # `.groups` argument removes grouping from final table
+    summarise(mean_weight = mean(Weight), 
+              sd_weight = sd(Weight),
+              n = n(), .groups = "drop") # `.groups` argument removes grouping from final table
   
   ggplot(chicks_plot, aes(x = Time, y = mean_weight, color = Diet)) +
     geom_line(linewidth = 1.2) + 
@@ -277,7 +393,7 @@ getwd() # when you run this, your working directory will appear in the console
          color = "Diet") +
     theme_minimal()
 
-# we can also combine manipulation and visualization
+# we can also combine manipulation and visualization within the tidyverse framework
 
 # compare final day (day 21) weights by diet using boxplots
   chicks %>% 
@@ -328,4 +444,19 @@ getwd() # when you run this, your working directory will appear in the console
   
 # there are also plug-ins for google sheets so that you can actively add to your data and import into R 
 # without having to re-save your file as a csv.
+  
+# resources for data uploads
+# https://www.datacamp.com/tutorial/r-data-import-tutorial
+# https://www.digitalocean.com/community/tutorials/google-sheets-in-r
+  
+### R and RStudio have decent integration with Git and GitHub if you wish to run version control for your project
+# visit: https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r ; if you want to get yourself started!
+  
+### useful keyboard shortcuts
+  
+# the shortcut for generating `%>%` is `ctrl + shift + m` // `cmd + shift + m`
 
+# you can put brackets around a section of text by highlighting it and typing `(`; this also goes for quotation marks, apostrophes, etc. 
+  
+# check out this website for all keyboard shortcuts
+# https://support.posit.co/hc/en-us/articles/200711853-Keyboard-Shortcuts-in-the-RStudio-IDE 
