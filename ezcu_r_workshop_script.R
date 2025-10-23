@@ -8,15 +8,6 @@
 # Basics ----
 ### ----------------------------------------------------------------------------
 
-# this first thing to do in a new script is to load the packages that you want to use
-
-# to download packages, use the `install.packages()` function!
-
-# to load packages, use the `library()` function
-
-library(dplyr)
-library(ggplot2)
-
 # this is a comment. comments are ignored when running code!
 # comments can be prefixed by any number of `#`
 
@@ -25,13 +16,13 @@ library(ggplot2)
 # if you add any four `-` after a `#`, it transforms the it into a drop down
 # you can use this to help hide sections of your code when they are not in use!
 
-# you can make any text into a comment using the shortcut `ctrl + shift + c`
+# you can make any text into a comment by highlighting it and using the shortcut `ctrl + shift + c`
 
 # for example:
 
 ### Section 1 -----
 
-# if you hit the small triangle at line 32, this text line and everything below it will disappear
+# if you hit the small triangle at line 23, this text line and everything below it will disappear
 # if you don't want all the text below section 1 to disappear, make sure to create
 # another section below using the same technique
 
@@ -42,7 +33,20 @@ library(ggplot2)
 ##### To run a command ----
 # 1) to run a single line, click on the line and select `run` or use `ctrl + enter` // `command + enter`
 # 2) to run multiple lines of code, highlight them and select `run` or use `ctrl + enter` // `command + enter`
-# 3) to run all the code in a script, use `ctrl + shift + enter`
+# 3) to run all the code in a script, use `ctrl + shift + enter` // `command + shift enter`
+
+# this first thing to do in a new script is to load the packages that you want to use
+
+# to download packages, use the `install.packages()` function!
+# only download them once 
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+
+# to load packages, use the `library()` function
+
+library(dplyr)
+library(ggplot2)
 
 ### projects and working directories ----
 
@@ -98,7 +102,7 @@ getwd() # when you run this, your working directory will appear in the console
   1 > 2 # is 1 greater than 2?
   1 <= 2  # is 1 less than or equal to 2?
   1 >= 2 # is 1 greater than or equal to 2?
-  1 !=2 # is 1 not equal to 2? 
+  1 != 2 # is 1 not equal to 2? 
 
 ## Vectors ----
 
@@ -130,6 +134,7 @@ getwd() # when you run this, your working directory will appear in the console
 # ------------------------------------------------------------------------------
 
 # let's start with the ChickWeight dataset in R
+  data(ChickWeight)
 
 # start with opening the help file for this dataset, this will show us what each column means
   ?ChickWeight
@@ -139,6 +144,7 @@ getwd() # when you run this, your working directory will appear in the console
 
 # let's create a copy of the dataset for simplicity
   chicks <- ChickWeight
+  
 # note that this appears in our environment!
 
 # quick structure and summary
@@ -149,6 +155,10 @@ getwd() # when you run this, your working directory will appear in the console
 # columns include: weight (g), time (days since birth), Chick ID, and diet type
 
 # data manipulation with dplyr
+  
+# renaming columns
+  chicks <- chicks %>% 
+    rename(Weight = weight)
 
 # filter: select rows based on conditions
 # show chicks fed diet type 1 only
@@ -157,29 +167,29 @@ getwd() # when you run this, your working directory will appear in the console
 
 # select: show specific columns only
   chicks %>% 
-    select(Chick, Time, weight)
+    select(Chick, Time, Weight)
 
 # arrange: sort rows
   chicks %>% 
-    arrange(desc(weight)) # descending order by weight
+    arrange(desc(Weight)) # descending order by weight
 
 # mutate: create a new variable
   chicks %>% 
-    mutate(weight_kg = weight / 1000)
+    mutate(Weight_kg = Weight / 1000)
 
 # summarise + group_by: compute statistics by group
 # note that this time, we are creating a new data frame called `chicks_summary`
   chicks_summary <- chicks %>% 
     group_by(Diet) %>% 
-    summarise(mean_weight = mean(weight),
-              sd_weight = sd(weight),
+    summarise(mean_weight = mean(Weight),
+              sd_weight = sd(Weight),
               n = n())
 
 # you can chain multiple verbs with pipes ( %>% )
   chicks %>% 
     filter(Time == 21) %>% 
     group_by(Diet) %>% 
-    summarise(mean_weight = mean(weight)) %>% 
+    summarise(mean_weight = mean(Weight)) %>% 
     arrange(desc(mean_weight))
 
 ### other notes
@@ -193,10 +203,13 @@ getwd() # when you run this, your working directory will appear in the console
 ### if you are creating new data frames, make sure to give them informative names!
 
 # 1) Create a new data frame, filtering for a single chick (e.g., Chick 10)
-# 2) Compute mean weight for each time point (regardless of diet)
-# 3) Add a column for log(weight)
-# 4) Summarize mean weight by diet and time, making it a data frame with the name `chicks_plot`
 
+# 2) Compute mean weight for each time point (regardless of diet)
+  
+# 3) Add a column for log(weight)
+    
+# 4) Summarise mean weight, grouped by diet and time, making it a data frame with the name `chicks_plot`
+  
 # ------------------------------------------------------------------------------
 ### data visualization ----
 # ------------------------------------------------------------------------------
@@ -213,13 +226,13 @@ getwd() # when you run this, your working directory will appear in the console
 
 # plotting weight vs time:
 
-  ggplot(chicks, aes(x = Time, y = weight)) +
+  ggplot(chicks, aes(x = Time, y = Weight)) +
     geom_point()
 
 # note that this is the same plot as 
   
   ggplot(chicks) +
-    geom_point(aes(x = Time, y = weight))
+    geom_point(aes(x = Time, y = Weight))
 
 # thus, your method of figure creation will depend on your goal. placing the mappings within 
 # the `ggplot()` call is typically the easiest. however, if you want to use different variables for
@@ -228,12 +241,12 @@ getwd() # when you run this, your working directory will appear in the console
 # now let's get into different techniques
 
 # add colour by diet to see treatment differences
-  ggplot(chicks, aes(x = Time, y = weight, color = Diet)) +
+  ggplot(chicks, aes(x = Time, y = Weight, color = Diet)) +
     geom_point(alpha = 0.6) + #adds transparency to points to increase visibility
     theme_minimal() # using built in themes can make your plots look even better!
   
   # add lines to show growth trajectories for each chick
-  ggplot(chicks, aes(x = Time, y = weight, group = Chick, color = Diet)) +
+  ggplot(chicks, aes(x = Time, y = Weight, group = Chick, color = Diet)) +
     geom_line(alpha = 0.7) + 
     theme_minimal()
 
@@ -241,7 +254,7 @@ getwd() # when you run this, your working directory will appear in the console
 # using the dplyr data manipulation framework, we can summarise and plot our data in one chunk of code
   chicks_plot <- chicks %>% 
     group_by(Diet, Time) %>% 
-    summarise(mean_weight = mean(weight), .groups = "drop") # `.groups` argument removes grouping from final table
+    summarise(mean_weight = mean(Weight), .groups = "drop") # `.groups` argument removes grouping from final table
   
   ggplot(chicks_plot, aes(x = Time, y = mean_weight, color = Diet)) +
     geom_line(linewidth = 1.2) + 
@@ -254,13 +267,13 @@ getwd() # when you run this, your working directory will appear in the console
 
 # example using multiple layers, with the same dataset from above
   ggplot() +
-    geom_point(data = chicks, aes(x = Time, y = weight, color = Diet),
+    geom_point(data = chicks, aes(x = Time, y = Weight, color = Diet),
                alpha = 0.5) + #shows the raw data points, colored by diet
     geom_line(data = chicks_plot, aes(x = Time, y = mean_weight, color = Diet),
               linewidth = 1.2) + #shows the mean weight by diet
     labs(title = "Mean Chick Weight Over Time by Diet", 
          x = "Days Since Birth",
-         y = "Mean Weight (g)", 
+         y = "Weight (g)", 
          color = "Diet") +
     theme_minimal()
 
@@ -269,7 +282,7 @@ getwd() # when you run this, your working directory will appear in the console
 # compare final day (day 21) weights by diet using boxplots
   chicks %>% 
     filter(Time == 21) %>% 
-    ggplot(aes(x = factor(Diet), y = weight, fill = factor(Diet))) +
+    ggplot(aes(x = factor(Diet), y = Weight, fill = factor(Diet))) +
     geom_boxplot() +
     labs(title = "Final Weight by Diet",
          x = "Diet type",
